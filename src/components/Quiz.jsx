@@ -74,7 +74,17 @@ const Quiz =()=>{
 
     };
 
-    
+    const goNext =()=>{
+        setCurrentQuestion((prev) => prev +1) ;
+    }
+    const goBack =()=>{
+        if(currentQuestion>0){
+            setCurrentQuestion((prev)=>prev -1);
+        }
+        
+    }
+
+
     return  (
     <div>
         <h2>Câu {currentQuestion +1}</h2>
@@ -83,7 +93,8 @@ const Quiz =()=>{
         {quizData[currentQuestion].options.map((option,index)=>(
             <button 
                 key={option}
-                className="option" 
+                className={`option ${optionSelected === option ?"selected":""}`}
+                disabled={!!optionSelected && optionSelected !== option}
                 onClick={()=>handleSelectedOption(option,index)}
             >
                 {option}
@@ -103,8 +114,8 @@ const Quiz =()=>{
         
 
         <div className="nav-buttons">
-            <button>Quay Lại</button>
-            <button>Tiếp Theo</button>
+            <button onClick={goBack}>Quay Lại</button>
+            <button onClick={goNext}>Tiếp Theo</button>
         </div>
 
     </div>
