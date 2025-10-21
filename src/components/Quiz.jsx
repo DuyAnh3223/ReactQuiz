@@ -101,6 +101,11 @@ const Quiz =()=>{
         setOptionSelected("");
     }
 
+    const reviewQuiz=()=>{
+        setCurrentQuestion(0);
+        setIsQuizEnded(false);
+    }
+
     useEffect(()=>{
         const answer=Number(userAnswers[currentQuestion]);
         const pastOptionSelected= quizData[currentQuestion].options[answer];
@@ -127,6 +132,7 @@ const Quiz =()=>{
             score ={score}
             totalQuestionNum={quizData.length}
             restartQuiz={restartQuiz}
+            reviewQuiz={reviewQuiz}
          />
         );
     }
