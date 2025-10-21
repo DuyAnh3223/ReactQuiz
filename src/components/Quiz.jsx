@@ -93,6 +93,14 @@ const Quiz =()=>{
         }
     };
 
+    const restartQuiz=()=>{
+        setCurrentQuestion(0);
+        setIsQuizEnded(false);
+        setScore(0);
+        setUserAnswers(Array.from({length: quizData.length}));
+        setOptionSelected("");
+    }
+
     useEffect(()=>{
         const answer=Number(userAnswers[currentQuestion]);
         const pastOptionSelected= quizData[currentQuestion].options[answer];
@@ -118,6 +126,7 @@ const Quiz =()=>{
         <Results 
             score ={score}
             totalQuestionNum={quizData.length}
+            restartQuiz={restartQuiz}
          />
         );
     }
