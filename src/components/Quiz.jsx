@@ -66,6 +66,8 @@ const Quiz =()=>{
 
     const [isQuizEnded, setIsQuizEnded] = useState(false);
 
+    const [score, setScore] = useState(0);
+
 
     const handleSelectedOption=(option, index)=>{
         setOptionSelected(option);
@@ -104,10 +106,20 @@ const Quiz =()=>{
         }
     }, [currentQuestion,userAnswers]);
 
+    useEffect(()=>{
+        if(optionSelected === quizData[currentQuestion].answer){
+            setScore((prev)=> prev +1);
+        }
+    },[optionSelected]);
 
 
     if(isQuizEnded){
-        return <Results />;
+        return (
+        <Results 
+            score ={score}
+            totalQuestionNum={quizData.length}
+         />
+        );
     }
 
 
