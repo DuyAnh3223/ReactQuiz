@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Results from "./Results";
 
 const quizData = [
     {
@@ -63,6 +64,7 @@ const Quiz =()=>{
 
     const [currentQuestion, setCurrentQuestion]= useState(0);
 
+    const [isQuizEnded, setIsQuizEnded] = useState(false);
 
 
     const handleSelectedOption=(option, index)=>{
@@ -75,13 +77,37 @@ const Quiz =()=>{
     };
 
     const goNext =()=>{
-        setCurrentQuestion((prev) => prev +1) ;
-    }
-    const goBack =()=>{
-        if(currentQuestion>0){
-            setCurrentQuestion((prev)=>prev -1);
-        }
         
+        if(currentQuestion === quizData.length -1){
+            setIsQuizEnded(true);
+        } else {
+            setCurrentQuestion((prev) => prev +1); 
+        }
+    };
+
+   const goBack =()=>{
+       if(currentQuestion>0){
+           setCurrentQuestion((prev)=>prev -1);
+        }
+    };
+
+    useEffect(()=>{
+        const answer=Number(userAnswers[currentQuestion]);
+        const pastOptionSelected= quizData[currentQuestion].options[answer];
+
+        if(answer !== undefined){
+            setOptionSelected(pastOptionSelected);
+        }
+        else
+        {
+            setOptionSelected("");
+        }
+    }, [currentQuestion,userAnswers]);
+
+
+
+    if(isQuizEnded){
+        return <Results />;
     }
 
 
@@ -104,18 +130,18 @@ const Quiz =()=>{
         <p>Câu trả lời của bạn: {optionSelected} </p>
 
         {
-            optionSelected === quizData[currentQuestion].answer ? (
+            optionSelected ? (optionSelected === quizData[currentQuestion].answer ? (
                 <p className="correct-answer">Câu trả lời của bạn chính xác</p>
             ) : (
                 <p className="incorrect-answer">Câu trả lời của bạn chưa chính xác</p>
-            )
+            )) : ("")
         }
 
         
 
         <div className="nav-buttons">
-            <button onClick={goBack}>Quay Lại</button>
-            <button onClick={goNext}>Tiếp Theo</button>
+            <button onClick={goBack} disabled={currentQuestion===0}>Quay Lại</button>
+            <button onClick={goNext} disabled={!optionSelected}>{currentQuestion === quizData.length-1?"Hoàn thành Quiz" :"Tiếp Theo"}</button>
         </div>
 
     </div>
